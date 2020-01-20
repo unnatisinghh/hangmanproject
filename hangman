@@ -1,0 +1,143 @@
+#from random_word import RandomWords
+import turtle
+bob = turtle.Turtle()
+
+bob.penup()
+bob.setposition(0,170.00)
+bob.pendown()
+bob.setheading(90)
+bob.forward(75)
+bob.setheading(180)
+bob.forward(140)
+bob.setheading(270)
+bob.forward(530)
+bob.setheading(0)
+bob.forward(60)
+bob.backward(120)
+
+def draw_head():
+    bob.penup()
+    bob.setposition(0,50.00)
+    bob.pendown()
+    bob.color("black", "black")
+    bob.circle(60)
+
+def draw_body():
+    bob.penup()
+    bob.setposition(0,50.00)
+    bob.pendown()
+    bob.right(90)
+    bob.forward(250.00)
+
+def draw_leg1():
+    bob.left(60)
+    bob.forward(100)
+
+def draw_leg2():
+    bob.penup()
+    bob.setposition(0,-200.00)
+    bob.pendown()
+    bob.right(120)
+    bob.forward(100)
+
+def draw_arm1():
+    bob.penup()
+    bob.setposition(0,-20.00)
+    bob.pendown()
+    bob.right(30)
+    bob.forward(100)
+
+def draw_arm2():
+    bob.penup()
+    bob.setposition(0,-20.00)
+    bob.pendown()
+    bob.left(180)
+    bob.forward(100)
+
+def draw_eye1():
+    bob.penup()
+    bob.setposition(-27.00,105.00)
+    bob.pendown()
+    bob.circle(5)
+
+def draw_eye2():
+    bob.penup()
+    bob.setposition(27.00,105.00)
+    bob.pendown()
+    bob.circle(5)
+
+def draw_smile():
+    bob.penup()
+    bob.setposition(-18.00,80.00)
+    bob.pendown()
+    bob.right(73)
+    for i in range(10):
+        bob.left(15)
+        bob.forward(5.00)
+
+def draw_frown():
+    bob.penup()
+    bob.setposition(-18.00,80.00)
+    bob.pendown()
+    bob.left(73)
+    for i in range(10):
+        bob.right(15)
+        bob.forward(5.00)
+
+lstpieces = [draw_head, draw_body, draw_leg1, draw_leg2, draw_arm1, 
+    draw_arm2, draw_eye1, draw_eye2, draw_frown]
+
+import random
+dict =["daffodil","rose","daisy","marigold","petunia",
+    "sunflower","lily","jasmine","aster","iris","magnolia",
+    "violet","dahlia","poppy", "lilac", "lavender", "cynthia",
+       "edelweiss", "flora", "geranium", "heather", "indigo", "ivy",
+       "lotus", "orchid", "pansy", "peony","primrose","tulip",
+       "buttercup", "chrysanthemum", "poinsettia", "carnation", "blossom"]
+word = (random.choice(dict))
+#r = RandomWords()
+#lengthh = input("How long would you like the word to be? (a number between 4 and 20 inclusive.")
+#word = r.get_random_word(hasDictionaryDef="true", minLength=lengthh, maxLength=lengthh)
+
+current_guess = list("_"*len(word))
+print(" ".join(current_guess))
+
+letterlist = list(word)
+#print(letterlist)
+nus = len(current_guess)
+num_wrong_guesses = 0
+guesslist = []
+while nus > 0:
+    found = False
+    done = False
+    guess = input("Pick a letter > ")
+    print(guess)
+    for i in guesslist:
+        if guess == i:
+            print("You've already guessed that letter. Try again!")
+            done = True
+    guesslist.append(guess)
+    for i in range(0, len(letterlist)):
+        if guess == letterlist[i] and current_guess[i] == "_":
+            found = True
+            current_guess[i] = guess
+            nus -= 1
+   
+
+    if found:
+        print("yay you got one!")
+        print(" ".join(current_guess))
+        if nus == 0:
+            print("you win :)")
+            lstpieces[len(lstpieces)-1] = draw_smile
+            for i in range (num_wrong_guesses, 9):
+                lstpieces[i]()
+    elif not found and not done:
+        print("sorry! try again!")
+        lstpieces[num_wrong_guesses]()
+        num_wrong_guesses += 1
+        if (num_wrong_guesses >= len(lstpieces)):
+            print("you lose :( the word was " + word)
+            break         
+
+turtle.getscreen()._root.mainloop()
